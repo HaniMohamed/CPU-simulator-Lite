@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,6 +37,8 @@ public class ProgramRun extends javax.swing.JFrame {
         this.code = code;
         initComponents();
         next.setVisible(false);
+        fetch.setVisible(false);
+        execute.setVisible(false);
 
         setTitle("Running Program");
         setResizable(false);
@@ -47,14 +50,14 @@ public class ProgramRun extends javax.swing.JFrame {
         cpu.setResizable(false);
         cpu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cpu.setLocationByPlatform(true);
-        cpu.setLocation(900, 100);
+        cpu.setLocation(910, 100);
         cpu.setVisible(true);
 
         reg.setTitle("General Purpose Registers");
         reg.setResizable(false);
         reg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         reg.setLocationByPlatform(true);
-        reg.setLocation(50, 500);
+        reg.setLocation(50, 450);
         reg.setVisible(true);
 
         ram.setTitle("Main Memory");
@@ -82,6 +85,8 @@ public class ProgramRun extends javax.swing.JFrame {
         exit = new javax.swing.JButton();
         start = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        fetch = new javax.swing.JButton();
+        execute = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,7 +111,7 @@ public class ProgramRun extends javax.swing.JFrame {
             }
         });
 
-        start.setFont(new java.awt.Font("Cantarell", 1, 14)); // NOI18N
+        start.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
         start.setText("start");
         start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,6 +123,24 @@ public class ProgramRun extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Running The Program");
 
+        fetch.setFont(new java.awt.Font("Cantarell", 1, 14)); // NOI18N
+        fetch.setText("fetch");
+        fetch.setEnabled(false);
+        fetch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fetchActionPerformed(evt);
+            }
+        });
+
+        execute.setFont(new java.awt.Font("Cantarell", 1, 14)); // NOI18N
+        execute.setText("Execute");
+        execute.setEnabled(false);
+        execute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                executeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,13 +148,17 @@ public class ProgramRun extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(start, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(start, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(fetch, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(execute, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -144,9 +171,13 @@ public class ProgramRun extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(start, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(next, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(start, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fetch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(execute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -161,24 +192,46 @@ public class ProgramRun extends javax.swing.JFrame {
     private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
         // TODO add your handling code here:
         if (i < (code.size())) {
-            fetch();
-            i++;
-            if (i == (code.size())) {
-                next.setEnabled(false);
-
-            }
+            listModel.addElement(code.get(i));
+            jList1.setModel(listModel);
+            fetch.setEnabled(true);
+            next.setEnabled(false);
 
         }
     }//GEN-LAST:event_nextActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         // TODO add your handling code here:
+        //fetch();
+        listModel.addElement(code.get(i));
+        jList1.setModel(listModel);
+        jList1.ensureIndexIsVisible(jList1.getModel().getSize() - 1);
+
+        start.setEnabled(false);
+        next.setVisible(true);
+        fetch.setVisible(true);
+        execute.setVisible(true);
+        fetch.setEnabled(true);
+
+    }//GEN-LAST:event_startActionPerformed
+
+    private void fetchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchActionPerformed
+        // TODO add your handling code here:
         fetch();
         i++;
-        next.setVisible(true);
-        start.setEnabled(false);
-        next.setEnabled(true);
-    }//GEN-LAST:event_startActionPerformed
+
+        fetch.setEnabled(false);
+        execute.setEnabled(true);
+    }//GEN-LAST:event_fetchActionPerformed
+
+    private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
+        // TODO add your handling code here:
+        execute();
+        execute.setEnabled(false);
+        if (i < (code.size())) {
+            next.setEnabled(true);
+        }
+    }//GEN-LAST:event_executeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,20 +272,70 @@ public class ProgramRun extends javax.swing.JFrame {
     public void fetch() {
         cpu.setMAR(cpu.getPC());
         cpu.setMBR(ram.getContent((int) Long.parseLong(cpu.getPC(), 16)));
-
-        listModel.addElement(code.get(i));
-        jList1.setModel(listModel);
-
+        cpu.setIR(ram.getContent((int) Long.parseLong(cpu.getPC(), 16)).substring(0, 2));
         cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16) + 1));
-        execute(ram.getContent((int) Long.parseLong(cpu.getPC(), 16) - 1));
     }
 
-    public void execute(String code) {
+    public void execute() {
+        String inst=null , command=null, oper1 = null, oper2 = null;
+        int oper1Value = 0, oper2Value = 0;
 
+        inst = cpu.getMBR().replace("75", "ADD").replace("57", "SUB").replace("62", "DEC")
+                .replace("56", "INC").replace("45", "MOV").replace("68", "END")
+                .replace("0100", "R1").replace("0101", "R2").replace("0110", "R3").replace("0111", "R4");
+
+        command = inst.substring(0, 3);
+
+        //Get 1st operand value
+        if (inst.length() > 3) {
+            oper1 = inst.substring(3, 5);
+            oper1Value = (int) Long.parseLong(reg.getReg(oper1), 16);
+        }
+
+        //Get 2nd operand value
+        if (inst.length() > 5) {
+            oper2 = inst.substring(5, inst.length());
+            if (oper2.contains("R")) {
+                oper2Value = (int) Long.parseLong(reg.getReg(oper2), 16);
+            } else {
+                oper2Value = (int) Long.parseLong(oper2, 16);
+            }
+        }
+
+        if (command.equals("ADD")) {
+            cpu.setAC(Integer.toHexString(oper1Value + oper2Value));
+            reg.setReg(oper1, cpu.getAC());
+        } else if (command.equals("SUB")) {
+            cpu.setAC(Integer.toHexString(oper1Value - oper2Value));
+            reg.setReg(oper1, cpu.getAC());
+        } else if (command.equals("INC")) {
+            cpu.setAC(Integer.toHexString(oper1Value + 1));
+            reg.setReg(oper1, cpu.getAC());
+        } else if (command.equals("DEC")) {
+            cpu.setAC(Integer.toHexString(oper1Value - 1));
+            reg.setReg(oper1, cpu.getAC());
+        } else if (command.equals("MOV")) {
+            cpu.setAC(Integer.toHexString(oper2Value));
+            reg.setReg(oper1, cpu.getAC());
+            reg.setReg(oper2, Integer.toHexString(oper1Value));
+        }
+
+    }
+
+    private String showInputDialog() {
+        String inputValue = JOptionPane.showInputDialog("Please input a number");
+
+        if (inputValue == null || inputValue.isEmpty() || !inputValue.matches("[A-Za-z]*")) {
+            inputValue = showInputDialog();
+        }
+
+        return inputValue;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton execute;
     private javax.swing.JButton exit;
+    private javax.swing.JButton fetch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;

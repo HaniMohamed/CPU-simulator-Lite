@@ -19,11 +19,11 @@ import javax.swing.event.DocumentListener;
  * @author hani
  */
 public class MainGUI extends javax.swing.JFrame {
-    
+
     List<String> finalCode = new ArrayList<>();
     String[] availRegisters = {"R1", "R2", "R3", "R4"};
     String code;
-    
+
     static MainGUI m = new MainGUI();
 
     /**
@@ -31,7 +31,7 @@ public class MainGUI extends javax.swing.JFrame {
      */
     public MainGUI() {
         initComponents();
-        
+
     }
 
     /**
@@ -179,14 +179,13 @@ public class MainGUI extends javax.swing.JFrame {
         if (checkCode()) {
             String[] codeLines = code.split("\n");
             for (int i = 0; i < jTextArea1.getLineCount(); i++) {
-                finalCode.add(codeLines[i].substring(0,(codeLines[i].indexOf(";")+1)));
+                finalCode.add(codeLines[i].substring(0, (codeLines[i].indexOf(";") + 1)));
             }
-            
+
             m.setVisible(false);
-            
+
             ProgramRun run = new ProgramRun(finalCode);
-           
-            
+
         }
     }//GEN-LAST:event_btnDoneActionPerformed
 
@@ -226,31 +225,34 @@ public class MainGUI extends javax.swing.JFrame {
                 m.setVisible(true);
                 m.setResizable(false);
                 m.setLocationRelativeTo(null);
-                
+
             }
         });
     }
-    
+
     public boolean checkCode() {
         boolean valid = false;
         code = jTextArea1.getText();
         String[] codeLines = code.split("\n");
-        for(int i=0; i<codeLines.length;i++){
-            codeLines[i]=codeLines[i].substring(0,(codeLines[i].indexOf(";")+1));
-        }
         
+        //Check for semicolon and Deleting comments if exist
+        for (int i = 0; i < codeLines.length; i++) {
+            if (codeLines[i].contains(";")) {
+                codeLines[i] = codeLines[i].substring(0, (codeLines[i].indexOf(";") + 1));
+            }else{
+                showError(i);
+                return false;
+            }
+        }
+
         if (code.equals("")) {
             jLabel3.setText("Error: No code entered !");
-            
+
         } else {
             for (int i = 0; i < jTextArea1.getLineCount(); i++) {
-                if (!codeLines[i].substring(codeLines[i].length() - 1).equals(";")) {
-                    showError(i);
-                    valid = false;
-                    break;
-                }
+               
                 String[] words = codeLines[i].replaceAll("[;,]", "").split("\\s+");
-                
+
                 if (words[0].equals("ADD")) {
                     //two operands
                     if (words.length == 3) {
@@ -274,15 +276,15 @@ public class MainGUI extends javax.swing.JFrame {
                         } else {
                             operand2 = true;
                         }
-                        
+
                         if (operand1 && operand2) {
                             valid = true;
                         }
-                        
+
                     } else {
                         valid = false;
                     }
-                    
+
                 } else if (words[0].equals("SUB")) {
                     //two operands
                     if (words.length == 3) {
@@ -306,15 +308,15 @@ public class MainGUI extends javax.swing.JFrame {
                         } else {
                             operand2 = true;
                         }
-                        
+
                         if (operand1 && operand2) {
                             valid = true;
                         }
                     } else {
                         valid = false;
                     }
-                    
-                }else if (words[0].equals("MOV")) {
+
+                } else if (words[0].equals("MOV")) {
                     //two operands
                     if (words.length == 3) {
                         valid = false;
@@ -337,14 +339,14 @@ public class MainGUI extends javax.swing.JFrame {
                         } else {
                             operand2 = true;
                         }
-                        
+
                         if (operand1 && operand2) {
                             valid = true;
                         }
                     } else {
                         valid = false;
                     }
-                    
+
                 } else if (words[0].equals("INC")) {
                     //one operand
                     if (words.length == 2) {
@@ -355,13 +357,13 @@ public class MainGUI extends javax.swing.JFrame {
                             if (words[1].equals(availRegisters[j])) {
                                 valid = true;
                             }
-                            
+
                         }
-                        
+
                     } else {
                         valid = false;
                     }
-                    
+
                 } else if (words[0].equals("DEC")) {
                     //one operand
                     if (words.length == 2) {
@@ -372,22 +374,22 @@ public class MainGUI extends javax.swing.JFrame {
                             if (words[1].equals(availRegisters[j])) {
                                 valid = true;
                             }
-                            
+
                         }
-                        
+
                     } else {
                         valid = false;
                     }
-                    
+
                 } else if (words[0].equals("END")) {
                     //zero operand
                     if (words.length == 1) {
                         valid = true;
-                        
+
                     } else {
                         valid = false;
                     }
-                    
+
                 } else {
                     valid = false;
                 }
@@ -403,10 +405,10 @@ public class MainGUI extends javax.swing.JFrame {
         }
         return valid;
     }
-    
+
     public void showError(int i) {
         jLabel3.setText("Error: in line" + (i + 1));
-        
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;

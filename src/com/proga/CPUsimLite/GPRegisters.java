@@ -16,6 +16,11 @@ public class GPRegisters extends javax.swing.JFrame {
      */
     public GPRegisters() {
         initComponents();
+        setR1(Integer.toHexString(15));
+        setR2(Integer.toHexString(7));
+        setR3(Integer.toHexString(3));
+        setR4(Integer.toHexString(20));
+
     }
 
     /**
@@ -172,6 +177,31 @@ public class GPRegisters extends javax.swing.JFrame {
                 new GPRegisters().setVisible(true);
             }
         });
+    }
+    
+    public void setReg(String reg, String content){
+        if (reg.equals("R1")){
+            setR1(content);
+        }else if (reg.equals("R2")){
+            setR2(content);
+        }else if (reg.equals("R3")){
+            setR3(content);
+        }else if (reg.equals("R4")){
+            setR4(content);
+        }
+    }
+    
+    public String getReg(String reg){
+        if (reg.equals("R1")){
+            return getR1();
+        }else if (reg.equals("R2")){
+            return getR2();
+        }else if (reg.equals("R3")){
+            return getR3();
+        }else if (reg.equals("R4")){
+            return getR4();
+        }
+        return null;
     }
     
     public void setR1(String hex){
