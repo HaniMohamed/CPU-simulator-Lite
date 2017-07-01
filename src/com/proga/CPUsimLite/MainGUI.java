@@ -5,10 +5,20 @@
  */
 package com.proga.CPUsimLite;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -56,6 +66,8 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
+        saveCode = new javax.swing.JButton();
+        loadCode = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,10 +104,12 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel4.setText("Available Instructions");
 
         jTextArea2.setEditable(false);
+        jTextArea2.setBackground(java.awt.SystemColor.controlHighlight);
         jTextArea2.setColumns(20);
         jTextArea2.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
+        jTextArea2.setLineWrap(true);
         jTextArea2.setRows(5);
-        jTextArea2.setText("ADD R1, R2;\t; add value of R2 to value of R1.\nSUB R1, R2;\t; subtract value of R2 from value of R1.\nMOV R3, R4;\t; transfer value from R4 to R3 .\nINC R1;\t; increment value of R1.\nDEC R2;\t; decrement value of R2.\nINP R4;\t; get input value and store it to R1.\nOUT R2;\t; output value of R2.\nEND;\t; end program.");
+        jTextArea2.setText("ADD R1, R2;\t; add value of R2 to value of R1.\nSUB R1, R2;\t; subtract value of R2 from value of R1.\nMOV R3, R4;\t; transfer value from R4 to R3.\nBNZ R2, 5;\t; if value of R2 is zero branch to location (5) in Main memory.\nSKZ R1;\t; skip next instruction if value of R2 is zero.\nINC R1;\t; increment value of R1.\nDEC R2;\t; decrement value of R2.\nINP R4;\t; get input value and store it to R1.\nOUT R2;\t; output value of R2.\nEND;\t; end program.");
         jScrollPane2.setViewportView(jTextArea2);
 
         jLabel5.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
@@ -107,10 +121,27 @@ public class MainGUI extends javax.swing.JFrame {
         jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         jTextArea4.setEditable(false);
+        jTextArea4.setBackground(java.awt.SystemColor.controlHighlight);
         jTextArea4.setColumns(20);
         jTextArea4.setRows(5);
         jTextArea4.setText("Four Registers:\n\tR1, R2, R3, R4");
         jScrollPane4.setViewportView(jTextArea4);
+
+        saveCode.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
+        saveCode.setText("Save to File");
+        saveCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveCodeActionPerformed(evt);
+            }
+        });
+
+        loadCode.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
+        loadCode.setText("Load from File");
+        loadCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadCodeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,24 +150,31 @@ public class MainGUI extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnDone)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnClose))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(12, 12, 12)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(saveCode)
+                                .addGap(18, 18, 18)
+                                .addComponent(loadCode))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDone)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClose)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -151,18 +189,20 @@ public class MainGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDone)
-                    .addComponent(btnClose))
+                    .addComponent(btnClose)
+                    .addComponent(saveCode)
+                    .addComponent(loadCode))
                 .addContainerGap())
         );
 
@@ -188,6 +228,15 @@ public class MainGUI extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_btnDoneActionPerformed
+
+    private void saveCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveCodeActionPerformed
+        // TODO add your handling code here:
+        saveFile();
+    }//GEN-LAST:event_saveCodeActionPerformed
+
+    private void loadCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loadCodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,12 +283,12 @@ public class MainGUI extends javax.swing.JFrame {
         boolean valid = false;
         code = jTextArea1.getText();
         String[] codeLines = code.split("\n");
-        
+
         //Check for semicolon and Deleting comments if exist
         for (int i = 0; i < codeLines.length; i++) {
             if (codeLines[i].contains(";")) {
                 codeLines[i] = codeLines[i].substring(0, (codeLines[i].indexOf(";") + 1));
-            }else{
+            } else {
                 showError(i);
                 return false;
             }
@@ -250,7 +299,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         } else {
             for (int i = 0; i < jTextArea1.getLineCount(); i++) {
-               
+
                 String[] words = codeLines[i].replaceAll("[;,]", "").split("\\s+");
 
                 if (words[0].equals("ADD")) {
@@ -347,7 +396,23 @@ public class MainGUI extends javax.swing.JFrame {
                         valid = false;
                     }
 
-                }else if (words[0].equals("INP")) {
+                } else if (words[0].equals("BNZ")) {
+                    //two operands
+                    if (words.length == 3) {
+                        valid = false;
+
+                        //1st operand must be Register
+                        for (int j = 0; j < availRegisters.length; j++) {
+                            if (words[1].equals(availRegisters[j])) {
+                                valid = true;
+                            }
+                        }
+
+                    } else {
+                        valid = false;
+                    }
+
+                } else if (words[0].equals("SKZ")) {
                     //one operand
                     if (words.length == 2) {
                         valid = false;
@@ -364,7 +429,24 @@ public class MainGUI extends javax.swing.JFrame {
                         valid = false;
                     }
 
-                }else if (words[0].equals("INC")) {
+                } else if (words[0].equals("INP")) {
+                    //one operand
+                    if (words.length == 2) {
+                        valid = false;
+
+                        //operand must be Register
+                        for (int j = 0; j < availRegisters.length; j++) {
+                            if (words[1].equals(availRegisters[j])) {
+                                valid = true;
+                            }
+
+                        }
+
+                    } else {
+                        valid = false;
+                    }
+
+                } else if (words[0].equals("INC")) {
                     //one operand
                     if (words.length == 2) {
                         valid = false;
@@ -444,6 +526,13 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel3.setText("Error: in line" + (i + 1));
 
     }
+
+    public void saveFile(){
+    
+    }
+    public void loadFile(){
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDone;
@@ -458,5 +547,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JButton loadCode;
+    private javax.swing.JButton saveCode;
     // End of variables declaration//GEN-END:variables
 }

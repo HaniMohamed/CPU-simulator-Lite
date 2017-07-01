@@ -36,6 +36,7 @@ public class ProgramRun extends javax.swing.JFrame {
     public ProgramRun(List<String> code) {
         this.code = code;
         initComponents();
+
         next.setVisible(false);
         fetch.setVisible(false);
         execute.setVisible(false);
@@ -67,6 +68,8 @@ public class ProgramRun extends javax.swing.JFrame {
         ram.setVisible(true);
         ram.setLocation(50, 100);
         ram.insertCode(code);
+
+        start.requestFocus();
 
     }
 
@@ -191,19 +194,22 @@ public class ProgramRun extends javax.swing.JFrame {
 
     private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
         // TODO add your handling code here:
-        
-            listModel.addElement(code.get(i));
-            jList1.setModel(listModel);
-            fetch.setEnabled(true);
-            next.setEnabled(false);
 
-        
+        listModel.addElement(code.get((int) Long.parseLong(cpu.getPC(), 16)));
+        jList1.setModel(listModel);
+        jList1.ensureIndexIsVisible(jList1.getModel().getSize() - 1);
+
+        fetch.setEnabled(true);
+        fetch.requestFocus();
+        next.setEnabled(false);
+
+
     }//GEN-LAST:event_nextActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         // TODO add your handling code here:
         //fetch();
-        listModel.addElement(code.get(i));
+        listModel.addElement(code.get((int) Long.parseLong(cpu.getPC(), 16)));
         jList1.setModel(listModel);
         jList1.ensureIndexIsVisible(jList1.getModel().getSize() - 1);
 
@@ -212,21 +218,23 @@ public class ProgramRun extends javax.swing.JFrame {
         fetch.setVisible(true);
         execute.setVisible(true);
         fetch.setEnabled(true);
+        fetch.requestFocus();
 
     }//GEN-LAST:event_startActionPerformed
 
     private void fetchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchActionPerformed
         // TODO add your handling code here:
         fetch();
-        i++;
 
         fetch.setEnabled(false);
         execute.setEnabled(true);
+        execute.requestFocus();
     }//GEN-LAST:event_fetchActionPerformed
 
     private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
         // TODO add your handling code here:
         next.setEnabled(true);
+        next.requestFocus();
         execute.setEnabled(false);
 
         execute();
@@ -282,7 +290,7 @@ public class ProgramRun extends javax.swing.JFrame {
 
         inst = cpu.getMBR().replace("75", "ADD").replace("57", "SUB").replace("62", "DEC")
                 .replace("56", "INC").replace("45", "MOV").replace("68", "END")
-                .replace("23", "INP").replace("48", "OUT")
+                .replace("23", "INP").replace("48", "OUT").replace("82", "BNZ").replace("91", "SKZ")
                 .replace("0100", "R1").replace("0101", "R2").replace("0110", "R3").replace("0111", "R4");
 
         command = inst.substring(0, 3);
@@ -323,9 +331,18 @@ public class ProgramRun extends javax.swing.JFrame {
             reg.setReg(oper1, cpu.getAC());
         } else if (command.equals("OUT")) {
             cpu.setAC(Integer.toHexString(oper1Value));
-            JOptionPane.showMessageDialog(null, "Output(int): " +  Long.parseLong(cpu.getAC(),16));
-        } else if (command.equals("END")) {
+            JOptionPane.showMessageDialog(null, "Output(int): " + Long.parseLong(cpu.getAC(), 16));
+        } else if (command.equals("BNZ")) {
+            if (!(oper1Value == 0)) {
+                cpu.setPC(Integer.toHexString(oper2Value));
+            }
+        } else if (command.equals("SKZ")) {
+            if (oper1Value == 0) {
+                cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16)+1));
+            }
+        }else if (command.equals("END")) {
             next.setEnabled(false);
+            exit.requestFocus();
         }
 
     }
