@@ -8,16 +8,21 @@ package com.proga.CPUsimLite;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -154,14 +159,13 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(saveCode)
                                 .addGap(18, 18, 18)
-                                .addComponent(loadCode))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))))
+                                .addComponent(loadCode)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
@@ -236,6 +240,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void loadCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadCodeActionPerformed
         // TODO add your handling code here:
+        loadFile();
     }//GEN-LAST:event_loadCodeActionPerformed
 
     /**
@@ -527,11 +532,48 @@ public class MainGUI extends javax.swing.JFrame {
 
     }
 
-    public void saveFile(){
-    
+    public void saveFile() {
+
+        JFileChooser fileChooser = new JFileChooser();
+        Component modalToComponent = null;
+
+        if (fileChooser.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+
+            try {
+                BufferedWriter out = new BufferedWriter(new FileWriter(file.getPath()));
+                out.write(jTextArea1.getText()); 
+                out.close();
+            } catch (IOException e) {
+                System.out.println("Exception ");
+
+            }
+        }
     }
-    public void loadFile(){
-        
+
+    public void loadFile() {
+        String content = null;
+
+        JFileChooser fileChooser = new JFileChooser();
+        Component modalToComponent = null;
+        if (fileChooser.showOpenDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+
+            try {
+                content = readFile(file.getPath(), Charset.defaultCharset());
+            } catch (IOException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        jTextArea1.setText(content);
+
+    }
+
+    static String readFile(String path, Charset encoding)
+            throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
