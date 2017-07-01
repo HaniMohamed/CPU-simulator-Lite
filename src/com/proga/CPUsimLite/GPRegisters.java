@@ -16,10 +16,10 @@ public class GPRegisters extends javax.swing.JFrame {
      */
     public GPRegisters() {
         initComponents();
-        setR1(Integer.toHexString(15));
-        setR2(Integer.toHexString(7));
-        setR3(Integer.toHexString(3));
-        setR4(Integer.toHexString(20));
+        setR1(Integer.toHexString(00));
+        setR2(Integer.toHexString(00));
+        setR3(Integer.toHexString(00));
+        setR4(Integer.toHexString(00));
 
     }
 
@@ -46,7 +46,7 @@ public class GPRegisters extends javax.swing.JFrame {
 
         jLabel2.setText("R2");
 
-        R2.setEditable(false);
+        R2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         R2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 R2ActionPerformed(evt);
@@ -55,24 +55,24 @@ public class GPRegisters extends javax.swing.JFrame {
 
         jLabel4.setText("R4");
 
-        R4.setEditable(false);
+        R4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel5.setText("R3");
 
         jLabel3.setText("R1");
 
-        R3.setEditable(false);
+        R3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         R3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 R3ActionPerformed(evt);
             }
         });
 
-        R1.setEditable(false);
+        R1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("General Purpose Registers");
+        jLabel1.setText("General Purpose Registers (Hex)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

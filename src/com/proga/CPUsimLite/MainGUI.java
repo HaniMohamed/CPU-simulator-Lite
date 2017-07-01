@@ -95,7 +95,7 @@ public class MainGUI extends javax.swing.JFrame {
         jTextArea2.setColumns(20);
         jTextArea2.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
         jTextArea2.setRows(5);
-        jTextArea2.setText("ADD R1, R2;\t; add 2nd operand value to 1st operand value.\nSUB R1, R2;\t; subtract 2nd operand value from 1st operand value.\nMOV R3, R4;\t; transfer value of 2nd operand  to the 1st operand\nINC R1;\t; increment Register value by 1.\nDEC R2;\t; decrement Register value by 1.\nEND;\t; end program.");
+        jTextArea2.setText("ADD R1, R2;\t; add value of R2 to value of R1.\nSUB R1, R2;\t; subtract value of R2 from value of R1.\nMOV R3, R4;\t; transfer value from R4 to R3 .\nINC R1;\t; increment value of R1.\nDEC R2;\t; decrement value of R2.\nINP R4;\t; get input value and store it to R1.\nOUT R2;\t; output value of R2.\nEND;\t; end program.");
         jScrollPane2.setViewportView(jTextArea2);
 
         jLabel5.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
@@ -136,7 +136,7 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -347,7 +347,41 @@ public class MainGUI extends javax.swing.JFrame {
                         valid = false;
                     }
 
-                } else if (words[0].equals("INC")) {
+                }else if (words[0].equals("INP")) {
+                    //one operand
+                    if (words.length == 2) {
+                        valid = false;
+
+                        //operand must be Register
+                        for (int j = 0; j < availRegisters.length; j++) {
+                            if (words[1].equals(availRegisters[j])) {
+                                valid = true;
+                            }
+
+                        }
+
+                    } else {
+                        valid = false;
+                    }
+
+                }else if (words[0].equals("INC")) {
+                    //one operand
+                    if (words.length == 2) {
+                        valid = false;
+
+                        //operand must be Register
+                        for (int j = 0; j < availRegisters.length; j++) {
+                            if (words[1].equals(availRegisters[j])) {
+                                valid = true;
+                            }
+
+                        }
+
+                    } else {
+                        valid = false;
+                    }
+
+                } else if (words[0].equals("OUT")) {
                     //one operand
                     if (words.length == 2) {
                         valid = false;

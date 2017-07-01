@@ -59,7 +59,7 @@ public class MainMemory extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Addesss", "Content"
+                "Addesss(Hex)", "Content(Hex)"
             }
         ) {
             Class[] types = new Class [] {
@@ -153,6 +153,7 @@ public class MainMemory extends javax.swing.JFrame {
                 code.get(i).replaceAll("[;, ]", "")
                         .replace("ADD", "75").replace("SUB", "57").replace("DEC", "62")
                         .replace("INC","56").replace("MOV","45").replace("END","68")
+                        .replace("INP","23").replace("OUT","48")
                         .replace("R1", "0100").replace("R2", "0101").replace("R3", "0110").replace("R4", "0111")
             };
             model.addRow(rowData);

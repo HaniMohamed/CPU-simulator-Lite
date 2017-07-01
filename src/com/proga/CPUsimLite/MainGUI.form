@@ -48,7 +48,7 @@
                   <Component id="jLabel4" max="32767" attributes="0"/>
                   <Component id="jScrollPane2" max="32767" attributes="0"/>
                   <Component id="jLabel5" max="32767" attributes="0"/>
-                  <Component id="jScrollPane4" alignment="0" pref="272" max="32767" attributes="0"/>
+                  <Component id="jScrollPane4" alignment="0" pref="289" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -167,7 +167,7 @@
               <Font name="Cantarell" size="12" style="0"/>
             </Property>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="ADD R1, R2;&#x9;; add 2nd operand value to 1st operand value.&#xa;SUB R1, R2;&#x9;; subtract 2nd operand value from 1st operand value.&#xa;MOV R3, R4;&#x9;; transfer value of 2nd operand  to the 1st operand&#xa;INC R1;&#x9;; increment Register value by 1.&#xa;DEC R2;&#x9;; decrement Register value by 1.&#xa;END;&#x9;; end program."/>
+            <Property name="text" type="java.lang.String" value="ADD R1, R2;&#x9;; add value of R2 to value of R1.&#xa;SUB R1, R2;&#x9;; subtract value of R2 from value of R1.&#xa;MOV R3, R4;&#x9;; transfer value from R4 to R3 .&#xa;INC R1;&#x9;; increment value of R1.&#xa;DEC R2;&#x9;; decrement value of R2.&#xa;INP R4;&#x9;; get input value and store it to R1.&#xa;OUT R2;&#x9;; output value of R2.&#xa;END;&#x9;; end program."/>
           </Properties>
         </Component>
       </SubComponents>

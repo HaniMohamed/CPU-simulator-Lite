@@ -191,13 +191,13 @@ public class ProgramRun extends javax.swing.JFrame {
 
     private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
         // TODO add your handling code here:
-        if (i < (code.size())) {
+        
             listModel.addElement(code.get(i));
             jList1.setModel(listModel);
             fetch.setEnabled(true);
             next.setEnabled(false);
 
-        }
+        
     }//GEN-LAST:event_nextActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
@@ -226,11 +226,11 @@ public class ProgramRun extends javax.swing.JFrame {
 
     private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
         // TODO add your handling code here:
-        execute();
+        next.setEnabled(true);
         execute.setEnabled(false);
-        if (i < (code.size())) {
-            next.setEnabled(true);
-        }
+
+        execute();
+
     }//GEN-LAST:event_executeActionPerformed
 
     /**
@@ -277,11 +277,12 @@ public class ProgramRun extends javax.swing.JFrame {
     }
 
     public void execute() {
-        String inst=null , command=null, oper1 = null, oper2 = null;
+        String inst = null, command = null, oper1 = null, oper2 = null;
         int oper1Value = 0, oper2Value = 0;
 
         inst = cpu.getMBR().replace("75", "ADD").replace("57", "SUB").replace("62", "DEC")
                 .replace("56", "INC").replace("45", "MOV").replace("68", "END")
+                .replace("23", "INP").replace("48", "OUT")
                 .replace("0100", "R1").replace("0101", "R2").replace("0110", "R3").replace("0111", "R4");
 
         command = inst.substring(0, 3);
@@ -317,15 +318,22 @@ public class ProgramRun extends javax.swing.JFrame {
         } else if (command.equals("MOV")) {
             cpu.setAC(Integer.toHexString(oper2Value));
             reg.setReg(oper1, cpu.getAC());
-            reg.setReg(oper2, Integer.toHexString(oper1Value));
+        } else if (command.equals("INP")) {
+            cpu.setAC(Integer.toHexString(Integer.parseInt(showInputDialog())));
+            reg.setReg(oper1, cpu.getAC());
+        } else if (command.equals("OUT")) {
+            cpu.setAC(Integer.toHexString(oper1Value));
+            JOptionPane.showMessageDialog(null, "Output(int): " +  Long.parseLong(cpu.getAC(),16));
+        } else if (command.equals("END")) {
+            next.setEnabled(false);
         }
 
     }
 
     private String showInputDialog() {
-        String inputValue = JOptionPane.showInputDialog("Please input a number");
+        String inputValue = JOptionPane.showInputDialog("Please input (int) number");
 
-        if (inputValue == null || inputValue.isEmpty() || !inputValue.matches("[A-Za-z]*")) {
+        if (inputValue == null || inputValue.isEmpty() || !inputValue.matches("[0-9]*")) {
             inputValue = showInputDialog();
         }
 

@@ -104,7 +104,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="R2">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="R2ActionPerformed"/>
@@ -117,7 +117,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="R4">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
@@ -132,7 +132,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="R3">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="R3ActionPerformed"/>
@@ -140,7 +140,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="R1">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
@@ -149,7 +149,7 @@
           <Font name="Cantarell" size="15" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="General Purpose Registers"/>
+        <Property name="text" type="java.lang.String" value="General Purpose Registers (Hex)"/>
       </Properties>
     </Component>
   </SubComponents>
