@@ -6,15 +6,10 @@
 package com.proga.CPUsimLite;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,10 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -37,6 +28,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     List<String> finalCode = new ArrayList<>();
     String[] availRegisters = {"R1", "R2", "R3", "R4"};
+
     String code;
 
     static MainGUI m = new MainGUI();
@@ -73,6 +65,9 @@ public class MainGUI extends javax.swing.JFrame {
         jTextArea4 = new javax.swing.JTextArea();
         saveCode = new javax.swing.JButton();
         loadCode = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea5 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,7 +77,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jLabel2.setText("Enter Simulation Code :");
 
-        btnDone.setText("Done");
+        btnDone.setText("Run");
         btnDone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDoneActionPerformed(evt);
@@ -103,7 +98,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(175, 22, 24));
         jLabel3.setText("   ");
 
-        jLabel4.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Cantarell", 1, 13)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(4, 124, 2));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Available Instructions");
@@ -112,15 +107,14 @@ public class MainGUI extends javax.swing.JFrame {
         jTextArea2.setBackground(java.awt.SystemColor.controlHighlight);
         jTextArea2.setColumns(20);
         jTextArea2.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        jTextArea2.setLineWrap(true);
         jTextArea2.setRows(5);
-        jTextArea2.setText("ADD R1, R2;\t; add value of R2 to value of R1.\nSUB R1, R2;\t; subtract value of R2 from value of R1.\nMOV R3, R4;\t; transfer value from R4 to R3.\nBNZ R2, 5;\t; if value of R2 is zero branch to location (5) in Main memory.\nSKZ R1;\t; skip next instruction if value of R2 is zero.\nINC R1;\t; increment value of R1.\nDEC R2;\t; decrement value of R2.\nINP R4;\t; get input value and store it to R1.\nOUT R2;\t; output value of R2.\nEND;\t; end program.");
+        jTextArea2.setText("//two operands instructions:\nADD\t; add value of 2nd operand from value of 1st operand.\nSUB\t; subtract value of 2nd operand from value of 1st operand.\nMOV\t; transfer value from 2nd operand to 1 operand.\nBNZ\t; if value of 2nd operand is not zero branch to location of value of 2nd operand.\n\n//one operand instructions:\nSKZ\t; skip next instruction if value of the operand is zero.\nINC\t; increment value of the opernad.\nDEC\t; decrement value of the operand.\nINP\t; get input value and store it to the operand.\nOUT\t; output value of the opernad.\nPUSH\t;push value of the opernad to the stack;\nPOP\t;pop top of stack to location of the operand.\nSKIP\t; skip \"n\" of Instructios=> n =  value of operand.\nSKIPZ\t;pop top of stack if equal zero skip  \"n\" of Instructios.\n\n//zero operand instructions\nNEGATE\t; negate the stack top\nADD\t; pop the top two elements of stack sum them then push the result.:\nMULTIPLY\t; pop the top two elements of stack multiply them then push the result.\nEND\t; end program.");
         jScrollPane2.setViewportView(jTextArea2);
 
-        jLabel5.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Cantarell", 1, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(4, 124, 2));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Available Registers");
+        jLabel5.setText("Registers");
 
         jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -128,8 +122,9 @@ public class MainGUI extends javax.swing.JFrame {
         jTextArea4.setEditable(false);
         jTextArea4.setBackground(java.awt.SystemColor.controlHighlight);
         jTextArea4.setColumns(20);
+        jTextArea4.setLineWrap(true);
         jTextArea4.setRows(5);
-        jTextArea4.setText("Four Registers:\n\tR1, R2, R3, R4");
+        jTextArea4.setText("Four General Purpose Registerts:\n\nR1 - R2 - R3 - R4");
         jScrollPane4.setViewportView(jTextArea4);
 
         saveCode.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
@@ -147,6 +142,22 @@ public class MainGUI extends javax.swing.JFrame {
                 loadCodeActionPerformed(evt);
             }
         });
+
+        jLabel6.setFont(new java.awt.Font("Cantarell", 1, 13)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(4, 124, 2));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Addresing Modes");
+
+        jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        jTextArea5.setEditable(false);
+        jTextArea5.setBackground(java.awt.SystemColor.controlHighlight);
+        jTextArea5.setColumns(20);
+        jTextArea5.setLineWrap(true);
+        jTextArea5.setRows(5);
+        jTextArea5.setText("Operand Addressing Modes:\n\nImmediate=>  #10\nMemory Indirect=>  (10)\nRegister=>  R2\nRegister Indirect=>  (R2)");
+        jScrollPane5.setViewportView(jTextArea5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -171,14 +182,25 @@ public class MainGUI extends javax.swing.JFrame {
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnDone)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnClose)))
+                        .addComponent(btnClose))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,16 +211,22 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane5))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -307,213 +335,77 @@ public class MainGUI extends javax.swing.JFrame {
 
                 String[] words = codeLines[i].replaceAll("[;,]", "").split("\\s+");
 
-                if (words[0].equals("ADD")) {
-                    //two operands
-                    if (words.length == 3) {
+                switch (words[0]) {
+                    case "ADD":
+                        //two or zero operand
+                        valid = words.length == 1 || words.length == 3;
+                        break;
+                    case "SUB":
+                        //check two operands
+                        valid = words.length == 3;
+                        break;
+                    case "MOV":
+                        //check two operands
+                        valid = words.length == 3;
+                        break;
+                    case "BNZ":
+                        //check two operands
+                        valid = words.length == 3;
+                        break;
+                    case "SKZ":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "INP":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "INC":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "OUT":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "DEC":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "PUSH":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "POP":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "SKIP":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "SKIPZ":
+                        //check one operand
+                        valid = words.length == 2;
+                        break;
+                    case "NEGATE":
+                        //zero operand
+                        valid = words.length == 1;
+                        break;                    
+                    case "MULTIPLY":
+                        //zero operand
+                        valid = words.length == 1;
+                        break;
+                    case "END":
+                        //zero operand
+                        valid = words.length == 1;
+                        break;
+                    default:
                         valid = false;
-                        boolean operand1 = false;
-                        boolean operand2 = false;
-                        //1st operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                operand1 = true;
-                            }
-                        }
-
-                        //check 2nd operand
-                        if (words[2].contains("R")) {
-                            for (int j = 0; j < availRegisters.length; j++) {
-                                if (words[2].equals(availRegisters[j])) {
-                                    operand2 = true;
-                                }
-                            }
-                        } else {
-                            operand2 = true;
-                        }
-
-                        if (operand1 && operand2) {
-                            valid = true;
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("SUB")) {
-                    //two operands
-                    if (words.length == 3) {
-                        valid = false;
-                        boolean operand1 = false;
-                        boolean operand2 = false;
-                        //1st operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                operand1 = true;
-                            }
-                        }
-
-                        //check 2nd operand
-                        if (words[2].contains("R")) {
-                            for (int j = 0; j < availRegisters.length; j++) {
-                                if (words[2].equals(availRegisters[j])) {
-                                    operand2 = true;
-                                }
-                            }
-                        } else {
-                            operand2 = true;
-                        }
-
-                        if (operand1 && operand2) {
-                            valid = true;
-                        }
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("MOV")) {
-                    //two operands
-                    if (words.length == 3) {
-                        valid = false;
-                        boolean operand1 = false;
-                        boolean operand2 = false;
-                        //1st operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                operand1 = true;
-                            }
-                        }
-
-                        //check 2nd operand
-                        if (words[2].contains("R")) {
-                            for (int j = 0; j < availRegisters.length; j++) {
-                                if (words[2].equals(availRegisters[j])) {
-                                    operand2 = true;
-                                }
-                            }
-                        } else {
-                            operand2 = true;
-                        }
-
-                        if (operand1 && operand2) {
-                            valid = true;
-                        }
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("BNZ")) {
-                    //two operands
-                    if (words.length == 3) {
-                        valid = false;
-
-                        //1st operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                valid = true;
-                            }
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("SKZ")) {
-                    //one operand
-                    if (words.length == 2) {
-                        valid = false;
-
-                        //operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                valid = true;
-                            }
-
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("INP")) {
-                    //one operand
-                    if (words.length == 2) {
-                        valid = false;
-
-                        //operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                valid = true;
-                            }
-
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("INC")) {
-                    //one operand
-                    if (words.length == 2) {
-                        valid = false;
-
-                        //operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                valid = true;
-                            }
-
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("OUT")) {
-                    //one operand
-                    if (words.length == 2) {
-                        valid = false;
-
-                        //operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                valid = true;
-                            }
-
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("DEC")) {
-                    //one operand
-                    if (words.length == 2) {
-                        valid = false;
-
-                        //operand must be Register
-                        for (int j = 0; j < availRegisters.length; j++) {
-                            if (words[1].equals(availRegisters[j])) {
-                                valid = true;
-                            }
-
-                        }
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else if (words[0].equals("END")) {
-                    //zero operand
-                    if (words.length == 1) {
-                        valid = true;
-
-                    } else {
-                        valid = false;
-                    }
-
-                } else {
-                    valid = false;
+                        break;
                 }
+                
+
                 if (!valid) {
                     showError(i);
                     break;
@@ -542,7 +434,7 @@ public class MainGUI extends javax.swing.JFrame {
 
             try {
                 BufferedWriter out = new BufferedWriter(new FileWriter(file.getPath()));
-                out.write(jTextArea1.getText()); 
+                out.write(jTextArea1.getText());
                 out.close();
             } catch (IOException e) {
                 System.out.println("Exception ");
@@ -583,12 +475,15 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea jTextArea5;
     private javax.swing.JButton loadCode;
     private javax.swing.JButton saveCode;
     // End of variables declaration//GEN-END:variables

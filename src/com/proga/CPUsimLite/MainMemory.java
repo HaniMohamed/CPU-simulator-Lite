@@ -17,7 +17,6 @@ public class MainMemory extends javax.swing.JFrame {
 
     DefaultTableModel model;
 
-    
     /**
      * Creates new form tableGUI
      */
@@ -148,29 +147,129 @@ public class MainMemory extends javax.swing.JFrame {
 
     public void insertCode(List<String> code) {
         for (int i = 0; i < code.size(); i++) {
+
+            //Set opcodes
+            String[] words = code.get(i).replaceAll("[;,]", "")
+                    .replace("SUB", "57").replace("DEC", "62")
+                    .replace("INC", "56").replace("MOV", "45").replace("END", "68")
+                    .replace("INP", "33").replace("OUT", "48").replace("BNZ", "28").replace("SKZ", "41")
+                    .replace("NEGATE", "67").replace("ADD", "58").replace("MULTIPLY", "115")
+                    .replace("PUSH", "23").replace("POP", "24").replace("SKIP", "29").replace("SKIPZ", "30")
+                    .split("\\s+");
+
+            //Convert opcode from decimal to binary
+            switch (words.length) {
+                case 1:
+                    //zero operand
+                    words[0] = intToBinary(Integer.parseInt(words[0]), 8);
+                    break;
+                case 2:
+                    //one operand
+                    words[0] = intToBinary(Integer.parseInt(words[0]), 6);
+                    break;
+                case 3:
+                    //two operands
+                    words[0] = intToBinary(Integer.parseInt(words[0]), 6);
+                    break;
+                default:
+                    break;
+            }
+            
+            //Set operands
+            for (int j = 1; j < words.length; j++) {
+
+                if (words[j].contains("#")) { //Immediate  Addressing Mode
+                    int value = Integer.parseInt(words[j].substring(1, words[j].length()));
+                    words[j] = "00" + intToBinary(value, 8);
+
+                } else if (words[j].contains("(")) {  //Indirect Addressing Mode                
+                    //Register Indirect
+                    if (words[j].contains("R")) {
+                        int regNum = Integer.parseInt(words[j].substring(2, 3));
+                        words[j] = "11" + intToBinary(regNum, 8);
+
+                    } //Memory Indirect
+                    else {
+                        int memoryAdd = Integer.parseInt(words[j].substring(1, words[j].indexOf(")")));
+                        words[j] = "01" + intToBinary(memoryAdd, 8);
+                    }
+                } else if (words[j].contains("R")) { //Register Addressing Mode
+                    int regNum = Integer.parseInt(words[j].substring(1, 2));
+                    words[j] = "10" + intToBinary(regNum, 8);
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "Error in addressing Mode in line " + i);
+
+                }
+
+            }
+
+            String instCode = String.join("", words);
+
             Object[] rowData = new Object[]{
                 Integer.toHexString(i),
-                code.get(i).replaceAll("[;, ]", "")
-                        .replace("ADD", "75").replace("SUB", "57").replace("DEC", "62")
-                        .replace("INC","56").replace("MOV","45").replace("END","68")
-                        .replace("INP","23").replace("OUT","48").replace("BNZ","82").replace("SKZ","91")
-                        .replace("R1", "0100").replace("R2", "0101").replace("R3", "0110").replace("R4", "0111")
+                Integer.toHexString(Integer.parseInt(instCode, 2))
             };
             model.addRow(rowData);
+
         }
 
     }
-    
-    public String getContent(int i){
-        return model.getValueAt(i, 1).toString();
+
+    public String getContent(String add) {
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).equals(add)) {
+                return model.getValueAt(i, 1).toString();
+            }
+        }
+        return null;
     }
-    
-     public void insertContent(String content){      
-        Object[] rowData = new Object[]{
-                Integer.toHexString(model.getRowCount()),
+
+    public void insertContent(String add, String content) {
+        boolean exist = false;
+        int location = 0;
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).equals(add)) {
+                exist = true;
+                location = i;
+                break;
+            }
+        }
+        if (exist) {
+            model.removeRow(location);
+
+            Object[] rowData = new Object[]{
+                add,
+                content
+            };
+            model.insertRow(location, rowData);
+
+        } else {
+
+            Object[] rowData = new Object[]{
+                add,
                 content
             };
             model.addRow(rowData);
+        }
+    }
+
+    public static String intToBinary(int n, int numOfBits) {
+        String binary = "";
+        for (int i = 0; i < numOfBits; ++i, n /= 2) {
+            switch (n % 2) {
+                case 0:
+                    binary = "0" + binary;
+                    break;
+                case 1:
+                    binary = "1" + binary;
+                    break;
+            }
+        }
+
+        return binary;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,11 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class ProgramRun extends javax.swing.JFrame {
 
+    String MBR_Binary = null;
+
     List<String> code = new ArrayList<>();
 
     CPURegisters cpu = new CPURegisters();
     MainMemory ram = new MainMemory();
     GPRegisters reg = new GPRegisters();
+    Stack stack = new Stack();
     int i = 0;
 
     DefaultListModel listModel = new DefaultListModel();
@@ -51,8 +54,9 @@ public class ProgramRun extends javax.swing.JFrame {
         cpu.setResizable(false);
         cpu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cpu.setLocationByPlatform(true);
-        cpu.setLocation(910, 100);
+        cpu.setLocation(910, 160);
         cpu.setVisible(true);
+        cpu.setSP(Integer.toHexString(20));
 
         reg.setTitle("General Purpose Registers");
         reg.setResizable(false);
@@ -60,6 +64,13 @@ public class ProgramRun extends javax.swing.JFrame {
         reg.setLocationByPlatform(true);
         reg.setLocation(50, 450);
         reg.setVisible(true);
+
+        stack.setTitle("Stack Memory");
+        stack.setResizable(false);
+        stack.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        stack.setLocationByPlatform(true);
+        stack.setLocation(910, 390);
+        stack.setVisible(true);
 
         ram.setTitle("Main Memory");
         ram.setResizable(false);
@@ -279,72 +290,222 @@ public class ProgramRun extends javax.swing.JFrame {
 
     public void fetch() {
         cpu.setMAR(cpu.getPC());
-        cpu.setMBR(ram.getContent((int) Long.parseLong(cpu.getPC(), 16)));
-        cpu.setIR(ram.getContent((int) Long.parseLong(cpu.getPC(), 16)).substring(0, 2));
+        cpu.setMBR(ram.getContent(cpu.getPC()));
+
+        MBR_Binary = "0" + Integer.toBinaryString((int) Long.parseLong(cpu.getMBR(), 16));
+
+        if (MBR_Binary.length() >= 26) {
+            if (MBR_Binary.length() > 26) {
+                MBR_Binary = MBR_Binary.substring(1, MBR_Binary.length());
+            }
+            cpu.setIR(Integer.toHexString((int) Long.parseLong(MBR_Binary.substring(0, 6), 2)));
+        } else if (MBR_Binary.length() > 8 && MBR_Binary.length() < 26) {
+            if (MBR_Binary.length() > 16) {
+                MBR_Binary = MBR_Binary.substring(1, MBR_Binary.length());
+
+            }
+            cpu.setIR(Integer.toHexString((int) Long.parseLong(MBR_Binary.substring(0, 6), 2)));
+        } else if (MBR_Binary.length() < 16) {
+            if (MBR_Binary.length() > 8) {
+                MBR_Binary = MBR_Binary.substring(1, MBR_Binary.length());
+
+            }
+            cpu.setIR(Integer.toHexString((int) Long.parseLong(MBR_Binary, 2)));
+        }
+
         cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16) + 1));
     }
 
     public void execute() {
-        String inst = null, command = null, oper1 = null, oper2 = null;
-        int oper1Value = 0, oper2Value = 0;
+        String inst = null;
 
-        inst = cpu.getMBR().replace("75", "ADD").replace("57", "SUB").replace("62", "DEC")
+        inst = Integer.toString((int) Long.parseLong(cpu.getIR(), 16)).replace("57", "SUB").replace("62", "DEC")
                 .replace("56", "INC").replace("45", "MOV").replace("68", "END")
-                .replace("23", "INP").replace("48", "OUT").replace("82", "BNZ").replace("91", "SKZ")
-                .replace("0100", "R1").replace("0101", "R2").replace("0110", "R3").replace("0111", "R4");
+                .replace("33", "INP").replace("48", "OUT").replace("28", "BNZ").replace("41", "SKZ")
+                .replace("67", "NEGATE").replace("58", "ADD").replace("115", "MULTIPLY")
+                .replace("23", "PUSH").replace("24", "POP").replace("29", "SKIP").replace("30", "SKIPZ");
 
-        command = inst.substring(0, 3);
+        switch (inst) {
+        //two operands instructions
+            case "SUB": {
+                int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, 16)), 16) - (int) Long.parseLong(fetchOperand(MBR_Binary.substring(16, MBR_Binary.length())), 16);
+                cpu.setAC(Integer.toHexString(result));
+                if (MBR_Binary.substring(6, 8).equals("10")) {
+                    reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, 16), 2), cpu.getAC());
+                } else {
+                    ram.insertContent(getDestination(MBR_Binary.substring(6, 16)), cpu.getAC());
+                }
+                break;
+            }
+            case "MOV": {
+                int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(16, MBR_Binary.length())), 16);
+                cpu.setAC(Integer.toHexString(result));
+                if (MBR_Binary.substring(6, 8).equals("10")) {
+                    reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, 16), 2), cpu.getAC());
+                } else {
+                    ram.insertContent(getDestination(MBR_Binary.substring(6, 16)), cpu.getAC());
+                }
+                break;
+            }
+            case "BNZ":
+                if (!(((int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, 16)), 16)) == 0)) {
 
-        //Get 1st operand value
-        if (inst.length() > 3) {
-            oper1 = inst.substring(3, 5);
-            oper1Value = (int) Long.parseLong(reg.getReg(oper1), 16);
+                    cpu.setPC(fetchOperand(MBR_Binary.substring(16, MBR_Binary.length())));
+                }
+                break;
+            //one operands instructions
+            case "SKZ": {
+                if (((int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())), 16)) == 0) {
+
+                    cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16)+1));
+                }
+                break;
+            }case "DEC": {
+                int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())), 16) - 1;
+                cpu.setAC(Integer.toHexString(result));
+                if (MBR_Binary.substring(6, 8).equals("10")) {
+                    reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, MBR_Binary.length()), 2), cpu.getAC());
+                } else {
+                    ram.insertContent(getDestination(MBR_Binary.substring(6, MBR_Binary.length())), cpu.getAC());
+                }
+                break;
+            }
+            case "INC": {
+                int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())), 16) + 1;
+                cpu.setAC(Integer.toHexString(result));
+                if (MBR_Binary.substring(6, 8).equals("10")) {
+                    reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, MBR_Binary.length()), 2), cpu.getAC());
+                } else {
+                    ram.insertContent(getDestination(MBR_Binary.substring(6, MBR_Binary.length())), cpu.getAC());
+                }
+                break;
+            }
+            case "INP":
+                cpu.setAC(Integer.toHexString(Integer.parseInt(showInputDialog())));
+                if (MBR_Binary.substring(6, 8).equals("10")) {
+                    reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, MBR_Binary.length()), 2), cpu.getAC());
+                } else {
+                    ram.insertContent(getDestination(MBR_Binary.substring(6, MBR_Binary.length())), cpu.getAC());
+                }
+                break;
+            case "OUT":
+                cpu.setAC(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())));
+                JOptionPane.showMessageDialog(null, "Output (Decimal):  " + (int) Long.parseLong(cpu.getAC(), 16));
+                break;
+            case "PUSH":
+                stack.push(Integer.toString((int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())), 16)));
+                cpu.setSP(Integer.toHexString((int) Long.parseLong(stack.top(), 16) - 1));
+                break;
+            case "POP":
+                if (MBR_Binary.substring(6, 8).equals("10")) {
+                    reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, MBR_Binary.length()), 2), Integer.toHexString(Integer.parseInt(stack.pop())));
+                } else {
+                    ram.insertContent(getDestination(MBR_Binary.substring(6, MBR_Binary.length())), Integer.toHexString(Integer.parseInt(stack.pop())));
+                }
+                cpu.setSP(stack.top());
+                break;
+            case "SKIP": {
+                int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())), 16);
+                cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16) + result));
+                break;
+            }
+            case "SKIPZ":
+                if (Integer.parseInt(stack.pop()) == 0) {
+                    int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, MBR_Binary.length())), 16);
+                    cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16) + result));
+
+                }
+                cpu.setSP(Integer.toHexString((int) Long.parseLong(stack.top(), 16) - 1));
+                break;
+            //zero operand instructions                           
+            case "MULTIPLY":
+                cpu.setAC(Integer.toHexString(Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop())));
+                stack.push(Integer.toString((int) Long.parseLong(cpu.getAC(), 16)));
+                cpu.setSP(Integer.toHexString((int) Long.parseLong(stack.top(), 16) - 1));
+                break;
+            case "NEGATE":
+                cpu.setAC(Integer.toHexString(Integer.parseInt(stack.pop()) * -1));
+                stack.push(Integer.toString((int) Long.parseLong(cpu.getAC(), 16)));
+                cpu.setSP(Integer.toHexString((int) Long.parseLong(stack.top(), 16) - 1));
+                break;
+            case "END":
+                next.setEnabled(false);
+                break;
+
+            //two or zero operand
+            case "ADD":
+
+                if (MBR_Binary.length() >= 26) { //two operands
+                    int result = (int) Long.parseLong(fetchOperand(MBR_Binary.substring(6, 16)), 16) + (int) Long.parseLong(fetchOperand(MBR_Binary.substring(16, MBR_Binary.length())), 16);
+                    cpu.setAC(Integer.toHexString(result));
+                    if (MBR_Binary.substring(6, 8).equals("10")) {
+                        reg.setReg((int) Long.parseLong(MBR_Binary.substring(8, 16), 2), cpu.getAC());
+                    } else {
+                        ram.insertContent(getDestination(MBR_Binary.substring(6, 16)), cpu.getAC());
+                    }
+                } else if (MBR_Binary.length() > 8 && MBR_Binary.length() < 26) { //zero operand
+
+                    cpu.setAC(Integer.toHexString(Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop())));
+                    stack.push(Integer.toString((int) Long.parseLong(cpu.getAC(), 16)));
+                    cpu.setSP(Integer.toHexString((int) Long.parseLong(stack.top(), 16) - 1));
+                }
+
+                break;
+            default:
+                break;
         }
 
-        //Get 2nd operand value
-        if (inst.length() > 5) {
-            oper2 = inst.substring(5, inst.length());
-            if (oper2.contains("R")) {
-                oper2Value = (int) Long.parseLong(reg.getReg(oper2), 16);
-            } else {
-                oper2Value = (int) Long.parseLong(oper2, 16);
-            }
+    }
+
+    //return value of operand (hex) 
+    public String fetchOperand(String opernandBinary) {
+        String value = null;
+        switch (opernandBinary.substring(0, 2)) {
+            case "00":
+                //Immediate  Addressing Mode
+                value = Integer.toHexString((int) Long.parseLong(opernandBinary.substring(2, opernandBinary.length()), 2));
+                break;
+            case "01":
+                //Memory Indirect
+                value = ram.getContent(Integer.toHexString((int) Long.parseLong(opernandBinary.substring(2, opernandBinary.length()), 2)));
+                break;
+            case "10":
+                //Register Addressing Mode
+                value = Integer.toHexString((int) Long.parseLong(reg.getReg((int) Long.parseLong(opernandBinary.substring(2, opernandBinary.length()), 2)), 16));
+                break;
+            case "11":
+                //Register Indirect
+                String RegValue = Integer.toHexString((int) Long.parseLong(reg.getReg((int) Long.parseLong(opernandBinary.substring(2, opernandBinary.length()), 2)), 16));
+                value = Integer.toHexString((int) Long.parseLong(ram.getContent(RegValue), 16));
+                break;
+            default:
+                break;
         }
 
-        if (command.equals("ADD")) {
-            cpu.setAC(Integer.toHexString(oper1Value + oper2Value));
-            reg.setReg(oper1, cpu.getAC());
-        } else if (command.equals("SUB")) {
-            cpu.setAC(Integer.toHexString(oper1Value - oper2Value));
-            reg.setReg(oper1, cpu.getAC());
-        } else if (command.equals("INC")) {
-            cpu.setAC(Integer.toHexString(oper1Value + 1));
-            reg.setReg(oper1, cpu.getAC());
-        } else if (command.equals("DEC")) {
-            cpu.setAC(Integer.toHexString(oper1Value - 1));
-            reg.setReg(oper1, cpu.getAC());
-        } else if (command.equals("MOV")) {
-            cpu.setAC(Integer.toHexString(oper2Value));
-            reg.setReg(oper1, cpu.getAC());
-        } else if (command.equals("INP")) {
-            cpu.setAC(Integer.toHexString(Integer.parseInt(showInputDialog())));
-            reg.setReg(oper1, cpu.getAC());
-        } else if (command.equals("OUT")) {
-            cpu.setAC(Integer.toHexString(oper1Value));
-            JOptionPane.showMessageDialog(null, "Output(int): " + Long.parseLong(cpu.getAC(), 16));
-        } else if (command.equals("BNZ")) {
-            if (!(oper1Value == 0)) {
-                cpu.setPC(Integer.toHexString(oper2Value));
-            }
-        } else if (command.equals("SKZ")) {
-            if (oper1Value == 0) {
-                cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16)+1));
-            }
-        }else if (command.equals("END")) {
-            next.setEnabled(false);
-            exit.requestFocus();
+        return value;
+    }
+
+    public String getDestination(String opernandBinary) {
+        String dest = null;
+
+        switch (opernandBinary.substring(0, 2)) {
+            case "00":
+                //Immediate  Addressing Mode
+                JOptionPane.showMessageDialog(null, "Error!  Destination operand can't be Immediate Addressing mode");
+                break;
+            case "01":
+                //Memory Indirect
+                dest = Integer.toHexString((int) Long.parseLong(opernandBinary.substring(2, opernandBinary.length()), 2));
+                break;
+            case "11":
+                //Register Indirect
+                dest = Integer.toHexString((int) Long.parseLong(reg.getReg((int) Long.parseLong(opernandBinary.substring(2, opernandBinary.length()), 2)), 16));
+                break;
+            default:
+                break;
         }
 
+        return dest;
     }
 
     private String showInputDialog() {

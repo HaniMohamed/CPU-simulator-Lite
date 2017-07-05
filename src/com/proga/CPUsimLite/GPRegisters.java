@@ -179,26 +179,26 @@ public class GPRegisters extends javax.swing.JFrame {
         });
     }
     
-    public void setReg(String reg, String content){
-        if (reg.equals("R1")){
+    public void setReg(int reg, String content){
+        if (reg==1){
             setR1(content);
-        }else if (reg.equals("R2")){
+        }else if (reg==2){
             setR2(content);
-        }else if (reg.equals("R3")){
+        }else if (reg==3){
             setR3(content);
-        }else if (reg.equals("R4")){
+        }else if (reg==4){
             setR4(content);
         }
     }
     
-    public String getReg(String reg){
-        if (reg.equals("R1")){
+    public String getReg(int reg){
+        if (reg==1){
             return getR1();
-        }else if (reg.equals("R2")){
+        }else if (reg==2){
             return getR2();
-        }else if (reg.equals("R3")){
+        }else if (reg==3){
             return getR3();
-        }else if (reg.equals("R4")){
+        }else if (reg==4){
             return getR4();
         }
         return null;

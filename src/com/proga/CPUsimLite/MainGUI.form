@@ -46,9 +46,7 @@
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel4" max="32767" attributes="0"/>
-                          <Component id="jScrollPane2" max="32767" attributes="0"/>
-                          <Component id="jLabel5" max="32767" attributes="0"/>
-                          <Component id="jScrollPane4" alignment="0" pref="307" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="329" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -56,6 +54,24 @@
                       <Component id="btnDone" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnClose" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <Component id="jScrollPane4" min="-2" pref="140" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabel5" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jScrollPane5" pref="0" max="32767" attributes="0"/>
+                          <Component id="jLabel6" pref="180" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -70,17 +86,26 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="181" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="149" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane4" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane5" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane4" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
-                  <Component id="jScrollPane1" min="-2" pref="293" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="303" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -113,7 +138,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnDone">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Done"/>
+        <Property name="text" type="java.lang.String" value="Run"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoneActionPerformed"/>
@@ -153,7 +178,7 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Cantarell" size="15" style="1"/>
+          <Font name="Cantarell" size="13" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="2" green="7c" red="4" type="rgb"/>
@@ -179,9 +204,8 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Cantarell" size="12" style="0"/>
             </Property>
-            <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="ADD R1, R2;&#x9;; add value of R2 to value of R1.&#xa;SUB R1, R2;&#x9;; subtract value of R2 from value of R1.&#xa;MOV R3, R4;&#x9;; transfer value from R4 to R3.&#xa;BNZ R2, 5;&#x9;; if value of R2 is zero branch to location (5) in Main memory.&#xa;SKZ R1;&#x9;; skip next instruction if value of R2 is zero.&#xa;INC R1;&#x9;; increment value of R1.&#xa;DEC R2;&#x9;; decrement value of R2.&#xa;INP R4;&#x9;; get input value and store it to R1.&#xa;OUT R2;&#x9;; output value of R2.&#xa;END;&#x9;; end program."/>
+            <Property name="text" type="java.lang.String" value="//two operands instructions:&#xa;ADD&#x9;; add value of 2nd operand from value of 1st operand.&#xa;SUB&#x9;; subtract value of 2nd operand from value of 1st operand.&#xa;MOV&#x9;; transfer value from 2nd operand to 1 operand.&#xa;BNZ&#x9;; if value of 2nd operand is not zero branch to location of value of 2nd operand.&#xa;&#xa;//one operand instructions:&#xa;SKZ&#x9;; skip next instruction if value of the operand is zero.&#xa;INC&#x9;; increment value of the opernad.&#xa;DEC&#x9;; decrement value of the operand.&#xa;INP&#x9;; get input value and store it to the operand.&#xa;OUT&#x9;; output value of the opernad.&#xa;PUSH&#x9;;push value of the opernad to the stack;&#xa;POP&#x9;;pop top of stack to location of the operand.&#xa;SKIP&#x9;; skip &quot;n&quot; of Instructios=&gt; n =  value of operand.&#xa;SKIPZ&#x9;;pop top of stack if equal zero skip  &quot;n&quot; of Instructios.&#xa;&#xa;//zero operand instructions&#xa;NEGATE&#x9;; negate the stack top&#xa;ADD&#x9;; pop the top two elements of stack sum them then push the result.:&#xa;MULTIPLY&#x9;; pop the top two elements of stack multiply them then push the result.&#xa;END&#x9;; end program."/>
           </Properties>
         </Component>
       </SubComponents>
@@ -189,13 +213,13 @@
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Cantarell" size="15" style="1"/>
+          <Font name="Cantarell" size="13" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="2" green="7c" red="4" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Available Registers"/>
+        <Property name="text" type="java.lang.String" value="Registers"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane4">
@@ -216,8 +240,9 @@
               <Color blue="e6" green="e6" id="Control Highlight" palette="2" red="e6" type="palette"/>
             </Property>
             <Property name="columns" type="int" value="20"/>
+            <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="Four Registers:&#xa;&#x9;R1, R2, R3, R4"/>
+            <Property name="text" type="java.lang.String" value="Four General Purpose Registerts:&#xa;&#xa;R1 - R2 - R3 - R4"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -244,5 +269,42 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadCodeActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JLabel" name="jLabel6">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Cantarell" size="13" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="2" green="7c" red="4" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Addresing Modes"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+      <Properties>
+        <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+        <Property name="verticalScrollBarPolicy" type="int" value="21"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextArea5">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="e6" green="e6" id="Control Highlight" palette="2" red="e6" type="palette"/>
+            </Property>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="lineWrap" type="boolean" value="true"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="text" type="java.lang.String" value="Operand Addressing Modes:&#xa;&#xa;Immediate=&gt;  #10&#xa;Memory Indirect=&gt;  (10)&#xa;Register=&gt;  R2&#xa;Register Indirect=&gt;  (R2)"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>
