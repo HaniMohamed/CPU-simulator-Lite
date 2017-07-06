@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class ProgramRun extends javax.swing.JFrame {
 
     String IR_Binary = null;
+    boolean finish = false;
 
     List<String> code = new ArrayList<>();
 
@@ -43,6 +44,7 @@ public class ProgramRun extends javax.swing.JFrame {
         next.setVisible(false);
         fetch.setVisible(false);
         execute.setVisible(false);
+        end.setVisible(false);
 
         setTitle("Running Program");
         setResizable(false);
@@ -54,7 +56,7 @@ public class ProgramRun extends javax.swing.JFrame {
         cpu.setResizable(false);
         cpu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cpu.setLocationByPlatform(true);
-        cpu.setLocation(910, 160);
+        cpu.setLocation(960, 160);
         cpu.setVisible(true);
         cpu.setSP(Integer.toHexString(20));
 
@@ -62,14 +64,14 @@ public class ProgramRun extends javax.swing.JFrame {
         reg.setResizable(false);
         reg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         reg.setLocationByPlatform(true);
-        reg.setLocation(50, 450);
+        reg.setLocation(20, 450);
         reg.setVisible(true);
 
         stack.setTitle("Stack Memory");
         stack.setResizable(false);
         stack.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         stack.setLocationByPlatform(true);
-        stack.setLocation(910, 390);
+        stack.setLocation(960, 390);
         stack.setVisible(true);
 
         ram.setTitle("Main Memory");
@@ -77,7 +79,7 @@ public class ProgramRun extends javax.swing.JFrame {
         ram.setLocationByPlatform(true);
         ram.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ram.setVisible(true);
-        ram.setLocation(50, 100);
+        ram.setLocation(20, 100);
         ram.insertCode(code);
 
         start.requestFocus();
@@ -101,6 +103,7 @@ public class ProgramRun extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         fetch = new javax.swing.JButton();
         execute = new javax.swing.JButton();
+        end = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,6 +158,15 @@ public class ProgramRun extends javax.swing.JFrame {
             }
         });
 
+        end.setFont(new java.awt.Font("Cantarell", 1, 14)); // NOI18N
+        end.setText(">>>");
+        end.setEnabled(false);
+        end.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -162,36 +174,39 @@ public class ProgramRun extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(start, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
+                        .addComponent(start, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(fetch, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(execute, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(end, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(start, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(fetch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(execute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(start, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(fetch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(execute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(end, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -219,12 +234,13 @@ public class ProgramRun extends javax.swing.JFrame {
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         // TODO add your handling code here:
-        //fetch();
         listModel.addElement(code.get((int) Long.parseLong(cpu.getPC(), 16)));
         jList1.setModel(listModel);
         jList1.ensureIndexIsVisible(jList1.getModel().getSize() - 1);
 
         start.setEnabled(false);
+        end.setVisible(true);
+        end.setEnabled(true);
         next.setVisible(true);
         fetch.setVisible(true);
         execute.setVisible(true);
@@ -238,6 +254,7 @@ public class ProgramRun extends javax.swing.JFrame {
         fetch();
 
         fetch.setEnabled(false);
+        end.setEnabled(false);
         execute.setEnabled(true);
         execute.requestFocus();
     }//GEN-LAST:event_fetchActionPerformed
@@ -245,12 +262,28 @@ public class ProgramRun extends javax.swing.JFrame {
     private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
         // TODO add your handling code here:
         next.setEnabled(true);
+        end.setEnabled(true);
         next.requestFocus();
         execute.setEnabled(false);
 
         execute();
 
     }//GEN-LAST:event_executeActionPerformed
+
+    private void endActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endActionPerformed
+        // TODO add your handling code here:
+        while (!finish) {
+
+            fetch();
+            execute();
+            if (!finish) {
+                listModel.addElement(code.get((int) Long.parseLong(cpu.getPC(), 16)));
+                jList1.setModel(listModel);
+                jList1.ensureIndexIsVisible(jList1.getModel().getSize() - 1);
+            }
+
+        }
+    }//GEN-LAST:event_endActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,42 +328,23 @@ public class ProgramRun extends javax.swing.JFrame {
 
         IR_Binary = "0" + Integer.toBinaryString((int) Long.parseLong(cpu.getMBR(), 16));
 
-        /*if (IR_Binary.length() >= 26) {
-            if (IR_Binary.length() > 26) {
-                IR_Binary = IR_Binary.substring(1, IR_Binary.length());
-            }
-            cpu.setIR(Integer.toHexString((int) Long.parseLong(IR_Binary.substring(0, 6), 2)));
-        } else if (IR_Binary.length() > 8 && IR_Binary.length() < 26) {
-            if (IR_Binary.length() > 16) {
-                IR_Binary = IR_Binary.substring(1, IR_Binary.length());
-
-            }
-            cpu.setIR(Integer.toHexString((int) Long.parseLong(IR_Binary.substring(0, 6), 2)));
-        } else if (IR_Binary.length() < 16) {
-            if (IR_Binary.length() > 8) {
-                IR_Binary = IR_Binary.substring(1, IR_Binary.length());
-
-            }
-            cpu.setIR(Integer.toHexString((int) Long.parseLong(IR_Binary, 2)));
-        }
-*/
         cpu.setPC(Integer.toHexString((int) Long.parseLong(cpu.getPC(), 16) + 1));
     }
 
     public void execute() {
         String inst = null;
-        String OPCODE="";
+        String OPCODE = "";
         if (IR_Binary.length() >= 26) {
             if (IR_Binary.length() > 26) {
                 IR_Binary = IR_Binary.substring(1, IR_Binary.length());
             }
-            OPCODE =Integer.toHexString((int) Long.parseLong(IR_Binary.substring(0, 6), 2));
+            OPCODE = Integer.toHexString((int) Long.parseLong(IR_Binary.substring(0, 6), 2));
         } else if (IR_Binary.length() > 8 && IR_Binary.length() < 26) {
             if (IR_Binary.length() > 16) {
                 IR_Binary = IR_Binary.substring(1, IR_Binary.length());
 
             }
-            OPCODE =Integer.toHexString((int) Long.parseLong(IR_Binary.substring(0, 6), 2));
+            OPCODE = Integer.toHexString((int) Long.parseLong(IR_Binary.substring(0, 6), 2));
         } else if (IR_Binary.length() < 16) {
             if (IR_Binary.length() > 8) {
                 IR_Binary = IR_Binary.substring(1, IR_Binary.length());
@@ -338,7 +352,7 @@ public class ProgramRun extends javax.swing.JFrame {
             }
             OPCODE = Integer.toHexString((int) Long.parseLong(IR_Binary, 2));
         }
-        
+
         inst = Integer.toString((int) Long.parseLong(OPCODE, 16)).replace("57", "SUB").replace("62", "DEC")
                 .replace("56", "INC").replace("45", "MOV").replace("68", "END")
                 .replace("33", "INP").replace("48", "OUT").replace("28", "BNZ").replace("41", "SKZ")
@@ -450,7 +464,11 @@ public class ProgramRun extends javax.swing.JFrame {
                 cpu.setSP(Integer.toHexString((int) Long.parseLong(stack.top(), 16) - 1));
                 break;
             case "END":
+                finish = true;
                 next.setEnabled(false);
+                fetch.setEnabled(false);
+                execute.setEnabled(false);
+                end.setEnabled(false);
                 break;
 
             //two or zero operand
@@ -540,6 +558,7 @@ public class ProgramRun extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton end;
     private javax.swing.JButton execute;
     private javax.swing.JButton exit;
     private javax.swing.JButton fetch;

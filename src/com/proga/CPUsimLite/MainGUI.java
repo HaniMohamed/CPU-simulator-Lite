@@ -10,6 +10,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JEditorPane;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -68,6 +72,15 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextArea5 = new javax.swing.JTextArea();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        runItem = new javax.swing.JMenuItem();
+        loadItem = new javax.swing.JMenuItem();
+        saveItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        exitItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        aboutItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,6 +171,63 @@ public class MainGUI extends javax.swing.JFrame {
         jTextArea5.setRows(5);
         jTextArea5.setText("Operand Addressing Modes:\n\nImmediate=>  #10\nMemory Indirect=>  (10)\nRegister=>  R2\nRegister Indirect=>  (R2)");
         jScrollPane5.setViewportView(jTextArea5);
+
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jMenu1.setText("File");
+
+        runItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+        runItem.setText("Run");
+        runItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(runItem);
+
+        loadItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
+        loadItem.setText("Load from file");
+        loadItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(loadItem);
+
+        saveItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
+        saveItem.setText("Save to file");
+        saveItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(saveItem);
+        jMenu1.add(jSeparator1);
+
+        exitItem.setText("Exit");
+        exitItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(exitItem);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Info");
+
+        aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK));
+        aboutItem.setText("About");
+        aboutItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(aboutItem);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -270,6 +340,31 @@ public class MainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         loadFile();
     }//GEN-LAST:event_loadCodeActionPerformed
+
+    private void exitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitItemActionPerformed
+        // TODO add your handling code here:
+        btnCloseActionPerformed(evt);
+    }//GEN-LAST:event_exitItemActionPerformed
+
+    private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
+      AboutGUI about = new AboutGUI();    
+
+    }//GEN-LAST:event_aboutItemActionPerformed
+
+    private void runItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runItemActionPerformed
+        // TODO add your handling code here:
+        btnDoneActionPerformed(evt);
+    }//GEN-LAST:event_runItemActionPerformed
+
+    private void saveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveItemActionPerformed
+        // TODO add your handling code here:
+        saveCodeActionPerformed(evt);
+    }//GEN-LAST:event_saveItemActionPerformed
+
+    private void loadItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadItemActionPerformed
+        // TODO add your handling code here:
+        loadCodeActionPerformed(evt);
+    }//GEN-LAST:event_loadItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -391,7 +486,7 @@ public class MainGUI extends javax.swing.JFrame {
                     case "NEGATE":
                         //zero operand
                         valid = words.length == 1;
-                        break;                    
+                        break;
                     case "MULTIPLY":
                         //zero operand
                         valid = words.length == 1;
@@ -404,7 +499,6 @@ public class MainGUI extends javax.swing.JFrame {
                         valid = false;
                         break;
                 }
-                
 
                 if (!valid) {
                     showError(i);
@@ -468,23 +562,32 @@ public class MainGUI extends javax.swing.JFrame {
         return new String(encoded, encoding);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutItem;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDone;
+    private javax.swing.JMenuItem exitItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JButton loadCode;
+    private javax.swing.JMenuItem loadItem;
+    private javax.swing.JMenuItem runItem;
     private javax.swing.JButton saveCode;
+    private javax.swing.JMenuItem saveItem;
     // End of variables declaration//GEN-END:variables
 }
