@@ -159,7 +159,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Cantarell", 1, 13)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(4, 124, 2));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Addresing Modes");
+        jLabel6.setText("Addressing Modes");
 
         jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
