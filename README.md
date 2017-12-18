@@ -6,10 +6,18 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 <img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-37-05.png?raw=true" height="350"/>
 </p>
 
-### Available Commands(Assembly Instructions):
-- ## Two operand Commands:
-> ADD	; add value of 2nd operand from value of 1st operand.
-> SUB	; subtract value of 2nd operand from value of 1st operand.
-> MOV	; transfer value from 2nd operand to 1 operand.
-> BNZ	; if value of 2nd operand is not zero branch to location of value of 2nd operand.
+## Available Commands(Assembly Instructions):
+- ### Two operand Commands:
+> 
+| Inst.         | Describe                                                                       |    
+| ------------- |:------------------------------------------------------------------------------:| 
+| ADD           | add value of 2nd operand from value of 1st operand.                            |
+| SUB           | subtract value of 2nd operand from value of 1st operand.                       |
+| MOV           | transfer value from 2nd operand to 1 operand.                                  |
+| BNZ           | if value of 2nd operand is not zero branch to location of value of 2nd operand.|
+
+ADD	; add value of 2nd operand from value of 1st operand.
+SUB	; subtract value of 2nd operand from value of 1st operand.
+MOV	; transfer value from 2nd operand to 1 operand.
+BNZ	; if value of 2nd operand is not zero branch to location of value of 2nd operand.
 
