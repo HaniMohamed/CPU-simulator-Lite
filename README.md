@@ -7,7 +7,6 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 </p>
 
 <br />
-<br />
 
 ### Available Commands(Assembly Instructions):
 
@@ -45,7 +44,6 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 
 
 <br />
-<br />
 
 ### Available Addressing Modes:
 
@@ -56,7 +54,14 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 | Register               | R2                      |
 | Register Indirect      | (R2)                    |
 
+<br />
+### Available General Purpose Registerts:
+> Four Registers: R1, R2, R3, R4.
 
-### Available Addressing Modes:
-> R1, R2, R3, R4.
-
+<br />
+### ScreenShots:
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-37-05.png?raw=true" height="350"/>
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-05.png?raw=true" height="350"/>
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-13.png?raw=true" height="350"/>
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-21.png?raw=true" height="350"/>
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-29.png?raw=true" height="350"/>
