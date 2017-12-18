@@ -11,7 +11,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 
 ### Available Commands(Assembly Instructions):
 - #### Two operands Commands:
-> 
+
 | Inst.         | Describe                                                                       |    
 | ------------- |--------------------------------------------------------------------------------| 
 | ADD           | add value of 2nd operand from value of 1st operand.                            |
@@ -21,7 +21,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 
 <br />
 - #### One operand Commands:
-> 
+
 | Inst.         | Describe                                                                       |    
 | ------------- |:------------------------------------------------------------------------------:| 
 | SKZ           | skip next instruction if value of the operand is zero.                         |
@@ -37,7 +37,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 
 <br />
 - #### Zero operand Commands:
-> 
+
 | Inst.         | Describe                                                                       |    
 | ------------- |:------------------------------------------------------------------------------:| 
 | NEGATE        | negate the top of stack.                                                       |
