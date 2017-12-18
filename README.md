@@ -11,7 +11,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 
 ### Available Commands(Assembly Instructions):
 
--  ####Two operands Commands:
+-  #### Two operands Commands:
 | Inst.         | Describe                                                                       |    
 | ------------- |--------------------------------------------------------------------------------| 
 | ADD           | add value of 2nd operand from value of 1st operand.                            |
@@ -57,5 +57,6 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 | Register Indirect      | (R2)                    |
 
 
-
+### Available Addressing Modes:
+> R1, R2, R3, R4.
 
