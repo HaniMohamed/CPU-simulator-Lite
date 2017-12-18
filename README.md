@@ -19,7 +19,6 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 | MOV           | transfer value from 2nd operand to 1 operand.                                  |
 | BNZ           | if value of 2nd operand is not zero branch to location of value of 2nd operand.|
 
-<br />
 -  One operand Commands:
 
 | Inst.         | Describe                                                                       |    
