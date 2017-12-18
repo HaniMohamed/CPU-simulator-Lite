@@ -63,12 +63,19 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 
 ### ScreenShots:
 
-
-<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-05.png?raw=true" width="550"/> 
-<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-13.png?raw=true" width="550"/>
-
+<p align="center">
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-05.png?raw=true" width="600"/> 
+ </p>
  
-
-<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-21.png?raw=true" width="550"/>
-<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-29.png?raw=true" width="550"/>
-
+ <p align="center">
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-13.png?raw=true" width="600"/>
+ </p>
+ 
+ <p align="center">
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-21.png?raw=true" width="600"/>
+  </p>
+  
+ <p align="center">
+<img src="https://github.com/HaniMohamed/CPUsimulatorLite-JAVA/blob/master/Screenshot%20from%202017-12-18%2009-39-29.png?raw=true" width="600"/>
+ </p>
+ 
