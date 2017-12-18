@@ -10,7 +10,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 <br />
 
 ### Available Commands(Assembly Instructions):
--  Two operands Commands:
+-  ####Two operands Commands:
 
 | Inst.         | Describe                                                                       |    
 | ------------- |--------------------------------------------------------------------------------| 
@@ -19,7 +19,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 | MOV           | transfer value from 2nd operand to 1 operand.                                  |
 | BNZ           | if value of 2nd operand is not zero branch to location of value of 2nd operand.|
 
--  One operand Commands:
+-  #### One operand Commands:
 
 | Inst.         | Describe                                                                       |    
 | ------------- |:------------------------------------------------------------------------------:| 
@@ -34,8 +34,7 @@ Simple CPU-simulator GUI by JAVA, Shows how Computer CPU Executes Assembly Comma
 | SKIPZ         | pop top of stack if equal zero skip  "n" of Instructios.                       |
 
 
-<br />
--  Zero operand Commands:
+-  #### Zero operand Commands:
 
 | Inst.         | Describe                                                                       |    
 | ------------- |:------------------------------------------------------------------------------:| 
